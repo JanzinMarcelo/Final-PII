@@ -3,23 +3,25 @@ import Pagina from "../Templates/Pagina";
 import FormularioCadObjeto from "./Formularios/FormCadObjeto";
 import TabelaObjetos from "./Tabelas/TabelaObjetos";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Importa o useNavigate
 import { consultarObjetos } from "../services/servicoObjeto";
 
 export default function TelaCadastroObjeto(props) {
     const [exibirTabela, setExibirTabela] = useState(true);
     const [objetos, setObjetos] = useState([]);
     const [modoEdicao, setModoEdicao] = useState(false);
-    // valores possíveis para situação: ok, erro, processando
-    const [situacao, setSituacao] = useState('ok');
+    const [situacao, setSituacao] = useState('ok'); // valores possíveis: ok, erro, processando
     const [objetoSelecionado, setObjetoSelecionado] = useState({
         id: '',
         nome: '',
         local: '',
         data: '',
         pessoa: '',
-        urlFoto: 'IMG_1482.jpg',
+        urlFoto: '',
         observacoes: ''
     });
+
+    const navigate = useNavigate(); // Inicializa o useNavigate
 
     useEffect(() => {
         setSituacao('processando');
@@ -32,7 +34,7 @@ export default function TelaCadastroObjeto(props) {
                 console.error(erro.message);
                 setSituacao('erro');
             });
-    }, []);  // vazio indica que o useEffect será executado sempre que o componente for carregado -> didMount
+    }, []); // Executa somente no carregamento do componente
 
     if (situacao === 'erro') {
         return (
@@ -45,8 +47,7 @@ export default function TelaCadastroObjeto(props) {
                 </Container>
             </Pagina>
         );
-    }
-    else if (situacao === 'processando') {
+    } else if (situacao === 'processando') {
         return (
             <Pagina>
                 <Container mt-3>
@@ -58,27 +59,31 @@ export default function TelaCadastroObjeto(props) {
                 </Container>
             </Pagina>
         );
-    }
-    else {
+    } else {
         return (
             <Pagina>
                 <Container mt-3>
                     <h2 className="text-center">Tela de Cadastro de Objetos</h2>
                     {
-                        exibirTabela ? <TabelaObjetos
-                            setExibirTabela={setExibirTabela}
-                            listaObjetos={objetos}
-                            setListaObjetos={setObjetos}
-                            setObjetoSelecionado={setObjetoSelecionado}
-                            setModoEdicao={setModoEdicao} />
-
-                            : <FormularioCadObjeto
+                        exibirTabela ? (
+                            <TabelaObjetos
+                                setExibirTabela={setExibirTabela}
+                                listaObjetos={objetos}
+                                setListaObjetos={setObjetos}
+                                setObjetoSelecionado={setObjetoSelecionado}
+                                setModoEdicao={setModoEdicao}
+                            />
+                        ) : (
+                            <FormularioCadObjeto
                                 setExibirTabela={setExibirTabela}
                                 listaObjetos={objetos}
                                 modoEdicao={modoEdicao}
                                 setModoEdicao={setModoEdicao}
                                 objetoSelecionado={objetoSelecionado}
-                                setObjetoSelecionado={setObjetoSelecionado} />
+                                setObjetoSelecionado={setObjetoSelecionado}
+                                navigate={navigate} // Passa o navigate para o formulário
+                            />
+                        )
                     }
                 </Container>
             </Pagina>

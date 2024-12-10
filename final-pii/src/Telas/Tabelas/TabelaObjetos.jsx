@@ -48,12 +48,12 @@ export default function TabelaObjetos(props) {
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Nome Completo</th>
-                        <th>Local</th>
-                        <th>Data</th>
-                        <th>Pessoa</th>
-                        <th>URL da Foto</th>
-                        <th>Observações</th>
+                        <th>Nome do Objeto</th>
+                        <th>Local encontrado</th>
+                        <th>Data de Encontro</th>
+                        <th>Pessoa que encontrou</th>
+                        <th>Foto do Objeto</th>
+                        <th>Observações do Objeto</th>
                         <th>Ações</th>
                     </tr>
                 </thead>

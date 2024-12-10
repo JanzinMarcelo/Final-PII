@@ -1,5 +1,6 @@
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Importa o useNavigate
 import { cadastrarObjeto, alterarObjeto } from "../../services/servicoObjeto";
 
 export default function FormularioCadastroObjeto(props) {
@@ -14,6 +15,7 @@ export default function FormularioCadastroObjeto(props) {
 
     const [validado, setValidado] = useState(false);
     const [previewURL, setPreviewURL] = useState(null);
+    const navigate = useNavigate(); // Inicializa o useNavigate
 
     // Atualiza o estado do objeto quando props.objetoSelecionado muda
     useEffect(() => {
@@ -65,7 +67,7 @@ export default function FormularioCadastroObjeto(props) {
                     const resposta = await cadastrarObjeto(objeto);
                     if (resposta.status) {
                         props.listaObjetos.push(objeto);
-                        props.setExibirTabela(true);
+                        navigate("/"); // Redireciona para a página inicial
                     } else {
                         alert(resposta.mensagem);
                     }
@@ -76,7 +78,7 @@ export default function FormularioCadastroObjeto(props) {
                         props.listaObjetos[indice] = objeto;
                         props.setModoEdicao(false);
                         props.setObjetoSelecionado(null); // Reseta o objeto selecionado
-                        props.setExibirTabela(true);
+                        navigate("/"); // Redireciona para a página inicial
                     } else {
                         alert(resposta.mensagem);
                     }
@@ -98,22 +100,22 @@ export default function FormularioCadastroObjeto(props) {
         <Form validated={validado} className="border p-2" noValidate onSubmit={cadastrarObjetoHandler}>
             <Row className="mb-3">
                 <Form.Group as={Col} md="4">
-                    <Form.Label>Nome:</Form.Label>
+                    <Form.Label>Nome do Objeto:</Form.Label>
                     <Form.Control
                         required
                         type="text"
-                        placeholder="Nome"
+                        placeholder="Nome do Objeto"
                         value={objeto.nome}
                         id="nome"
                         name="nome"
                         onChange={atualizarObjeto}
                     />
-                    <Form.Control.Feedback type="invalid">Por favor, informe o nome!</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">Por favor, informe o Objeto!</Form.Control.Feedback>
                 </Form.Group>
             </Row>
             <Row className="mb-3">
                 <Form.Group as={Col}>
-                    <Form.Label>Local:</Form.Label>
+                    <Form.Label>Local encontrado:</Form.Label>
                     <Form.Control
                         required
                         type="text"
@@ -128,7 +130,7 @@ export default function FormularioCadastroObjeto(props) {
             </Row>
             <Row className="mb-3">
                 <Form.Group as={Col}>
-                    <Form.Label>Data:</Form.Label>
+                    <Form.Label>Data de local encontrado:</Form.Label>
                     <Form.Control
                         required
                         type="date"
@@ -142,7 +144,7 @@ export default function FormularioCadastroObjeto(props) {
             </Row>
             <Row className="mb-3">
                 <Form.Group as={Col}>
-                    <Form.Label>Pessoa:</Form.Label>
+                    <Form.Label>Pessoa que encontrou:</Form.Label>
                     <Form.Control
                         type="text"
                         placeholder="Pessoa"
@@ -156,7 +158,7 @@ export default function FormularioCadastroObjeto(props) {
             </Row>
             <Row className="mb-3">
                 <Form.Group as={Col}>
-                    <Form.Label>Foto:</Form.Label>
+                    <Form.Label>Foto do objeto:</Form.Label>
                     <Form.Control
                         type="file"
                         accept=".png"
@@ -168,7 +170,7 @@ export default function FormularioCadastroObjeto(props) {
             </Row>
             <Row className="mb-3">
                 <Form.Group as={Col}>
-                    <Form.Label>Observações:</Form.Label>
+                    <Form.Label>Observações sobre o Objeto:</Form.Label>
                     <Form.Control
                         as="textarea"
                         placeholder="Observações"
